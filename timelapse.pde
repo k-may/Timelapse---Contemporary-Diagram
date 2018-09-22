@@ -41,7 +41,7 @@ void draw() {
     updateImages();
   }
 
-  //just let it crash...
+   //just let it crash...
 
   float fadeIn = (counter - floor(currentIndex * lengthImage)) / (float)lengthImage;
 
