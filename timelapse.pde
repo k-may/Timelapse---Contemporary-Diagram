@@ -1,60 +1,88 @@
-PImage[] images;
-String[] paths = new String[]{
-  "G0010474.JPG", 
-  "G0010475.JPG", 
-  "G0010476.JPG", 
-  "G0010477.JPG", 
-  "G0010478.JPG", 
-  "G0010479.JPG", 
-};
-int currentIndex = 0;
-int lengthImage = 40;
-boolean isRecording = true;
+
+String path = "Archive (1)/infra-";
+
+int numFramesOrig = 3000;
+
+int pace = 1;
+int currentIndex = 1;
+int nextIndex = 1;
+int lengthImage = 12;
+
+float scaleAmt = 0;//.03;
+float scale = 1;
+
+PImage startImage;
+PImage endImage;
+
+int counter = 0;
+
+boolean isRecording = false;
 
 void setup() {
-  size(800, 600);
+  //size(3840, 2160);
+  size(1920, 1080);
+  frameRate(25);
 
-  images = new PImage[paths.length];
+  //set start position
+  currentIndex = nextIndex = 17051;
 
-  for (int i = 0; i < paths.length; i ++) {
-    images[i] = loadImage(paths[i]);
-  }
+  updateImages();
 }
 
 
 void draw() {
 
   background(255);
+  counter ++;
 
-  if (frameCount < images.length * lengthImage) {
-    int count = frameCount % (images.length * lengthImage);
+  int index = floor(counter / lengthImage);
 
-    currentIndex = floor(count / lengthImage);
+  if (currentIndex != index) {
+    updateImages();
+  }
 
-    //print(count, currentIndex);
+  //just let it crash...
 
-    float fadeIn = (count - floor(currentIndex * lengthImage)) / (float)lengthImage;
-    float fadeOut = 1.0 - fadeIn;
+  float fadeIn = (counter - floor(currentIndex * lengthImage)) / (float)lengthImage;
 
-    PImage startImage = images[currentIndex];
-    PImage endImage = images[(currentIndex + 1) % images.length];
+  float scaleOut = scale - scaleAmt + fadeIn * scaleAmt;
+  float scaleIn = scale + fadeIn * scaleAmt;
 
-    float scale = 1;
-    float scaleOut = scale;// - 0.1 + fadeIn * 0.1;
-    float scaleIn = scale;// + fadeIn * 0.1;
-    
-    int w = width;// / 2;
-    int h = height;
-    
-    // tint(255, pow(fadeOut, 2) * 255);
-    tint(255, 255);
-    image(startImage, (w - w * scaleIn)/2, (h - h * scaleIn)/2, w * scaleIn, h * scaleIn);
+  float aspect = 3000/4000;
 
-    tint(255, fadeIn* 255);
-    image(endImage,(w - w * scaleOut)/2, (h - h * scaleOut)/2, w * scaleOut, h * scaleOut);
-    
-    if(isRecording)
-      saveFrame();
-  }else
-    exit();
+  float w = width * scaleIn;// / 2;
+  float h =height * 4/3;
+  float x =  (width - w)/2;
+  float y = (height - h)/2;
+
+ // println(h, height * 3/4);
+  tint(255, 255);
+  image(startImage, x, y, w, h);
+
+  tint(255, fadeIn * 255);
+  image(endImage, x, y, w, h);
+
+  if (isRecording)
+    saveFrame();
+
+  //} else
+  //exit();
+}
+
+void updateImages() {
+
+  currentIndex = nextIndex;
+  nextIndex = currentIndex + pace;
+  counter = currentIndex * lengthImage;
+
+  println("-->" + currentIndex);
+
+  //only load two images at a time;
+  if (endImage != null) {
+    startImage = endImage;
+  } else {
+    startImage = loadImage(path + String.format("%05d", currentIndex) + ".JPG");
+  }
+
+  endImage = loadImage(path + String.format("%05d", nextIndex) + ".JPG");
 }
