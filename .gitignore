@@ -2,4 +2,17 @@
 .idea/
 node_modules
 npm-debug.log
+*.mov
+*.mov.tmp
+
+### Processing template
+.DS_Store
+applet
+application.linux32
+application.linux64
+application.windows32
+application.windows64
+application.macosx
+
+/data/
 /timelapse/data/
