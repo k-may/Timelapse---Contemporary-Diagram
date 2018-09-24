@@ -23,16 +23,18 @@ class Player {
   Player(int wi, int hi, String p, int fS) {
     w = wi;
     h = hi;
+    
+    println(w, h);
     path = p;
-    frameStart = fS;
+    currentIndex = nextIndex = fS;
     buffer = createGraphics(w, h);
 
     updateImages();
   }
 
   void draw(int x, int y) {
-    counter ++;
-
+    counter ++; 
+    
     int index = floor(counter / lengthImage);
 
     if (currentIndex != index) {
@@ -42,10 +44,10 @@ class Player {
 
     buffer.beginDraw();
     buffer.tint(255, 255);
-    buffer.image(startImage, x, y, w, h);
+    buffer.image(startImage, 0, 0, w, h);
 
     buffer.tint(255, fadeIn * 255);
-    buffer.image(endImage, x, y, w, h); 
+    buffer.image(endImage, 0, 0, w, h); 
     buffer.endDraw();
 
     image(buffer, x, y, w, h);
@@ -57,15 +59,15 @@ class Player {
     nextIndex = currentIndex + pace;
     counter = currentIndex * lengthImage;
 
-    println("-->" + currentIndex);
+    //println("-->" + currentIndex);
 
     //only load two images at a time;
     if (endImage != null) {
       startImage = endImage;
     } else {
-      startImage = loadImage(path +currentIndex + ".JPG");// String.format("%05d", currentIndex) + ".JPG");
+      startImage = loadImage(path + String.format("%05d", currentIndex) + ".jpg");
     }
 
-    endImage = loadImage(path + nextIndex + ".JPG");//String.format("%05d", nextIndex) + ".JPG");
+    endImage = loadImage(path + String.format("%05d", nextIndex) + ".jpg");
   }
 }
