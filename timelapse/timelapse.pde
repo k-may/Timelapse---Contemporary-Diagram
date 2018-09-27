@@ -1,3 +1,4 @@
+import java.nio.file.*;
 
 String path = "Archive (1)/infra-";
 
@@ -22,9 +23,13 @@ void setup() {
   //size(3840, 2160);
   size(1920, 1080);
   frameRate(25);
-
+  
+  Path root = Paths.get(sketchPath(""));
+  root = root.getParent().getParent();
+  Path p = root.resolve("Archive (1)/");
+  path = p.toString() + "/infra-";
   //set start position
-  currentIndex = nextIndex = 17051;
+  currentIndex = nextIndex = 9501;
 
   updateImages();
 }

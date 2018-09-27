@@ -1,5 +1,9 @@
 # Timelapse---Contemporary-Diagram
 
-Processing Sketch for creating a timelapse image stream from a collection of images.
+Collection of Processing Sketches for creating a timelapse image stream from a series of images.
 
-Adds subtle zooming and interpolation between frames.
+![alt text](assets/timelapse.gif)
+
+![alt text](assets/timeladder.gif)
+
+![alt text](assets/timegrid.gif)
